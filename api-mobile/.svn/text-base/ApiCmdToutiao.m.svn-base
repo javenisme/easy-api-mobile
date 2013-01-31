@@ -1,0 +1,144 @@
+//
+//  ApiCmdToutiao.m
+//  HDBaike
+//
+//  Created by javen on 13-1-22.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmdToutiao.h"
+#import "common.h"
+#import "CommentInfo.h"
+
+@implementation ToutiaoInfo
+@synthesize DocId,ToutiaoId,ToutiaoDesc,ToutiaoTitle,ToutiaoPicUrl,ToutiaoDocTitle,ToutiaoCommentCount,ToutiaoCommentsHotAry,ToutiaoCommentsNewAry,hotCommentsUserViewInfos;
+
+-(id)init{
+    if (self = [super init]) {
+        self.DocId = nil;
+        self.ToutiaoId = nil;
+        self.ToutiaoDesc = nil;
+        self.ToutiaoDocTitle = nil;
+        self.ToutiaoPicUrl = nil;
+        self.ToutiaoCommentCount = nil;
+        self.ToutiaoCommentsHotAry = nil;
+        self.ToutiaoCommentsNewAry = nil;
+    }
+    return self;
+}
+
+-(void)parseResultData:(NSDictionary *)dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+//    apiLogDebug(@"totiao dictionary %@",dictionary);
+    
+    self.DocId = [NSString stringWithFormat:@"%@",defaultNilObject([dictionary objectForKey:@"docId"])];
+    self.ToutiaoId = defaultNilObject([dictionary objectForKey:@"surveyId"]);
+    self.ToutiaoTitle = defaultNilObject([dictionary objectForKey:@"surveyTitle"]);
+    self.ToutiaoDocTitle = defaultNilObject([dictionary objectForKey:@"surveyDocTitle"]);
+    self.ToutiaoPicUrl = defaultNilObject([dictionary objectForKey:@"surveyPicUrl"]);
+    self.ToutiaoDesc = defaultNilObject([dictionary objectForKey:@"surveyDesc"]);
+    self.ToutiaoCommentCount = defaultNilObject([dictionary objectForKey:@"surveyCommentCount"]);
+    
+    // parse toutiao comments hot array
+    NSDictionary * allCommentsHotDict = defaultNilObject([dictionary objectForKey:@"hotComments"]);
+    NSDictionary * hotItemsDict = defaultNilObject([allCommentsHotDict objectForKey:@"comments"]);
+    NSArray * allCommentsHotAry = defaultNilObject([hotItemsDict objectForKey:@"items"]);
+    NSMutableArray * resultsCommentsHot = [NSMutableArray array];
+    
+    // user identify string
+    self.hotCommentsUserViewInfos = defaultNilObject([hotItemsDict objectForKey:@"userCardViewInfos"]);
+    
+    for (int index = 0; index < allCommentsHotAry.count; index ++) {
+        NSDictionary * commentDict = [allCommentsHotAry objectAtIndex:index];
+        CommentInfo * _commentItem = [[CommentInfo alloc] init];
+        [_commentItem parseResultData:commentDict];
+        [resultsCommentsHot addObject:_commentItem];
+        [_commentItem release];
+    }
+    self.ToutiaoCommentsHotAry = resultsCommentsHot;
+    
+    // parse toutiao comments new array
+    NSDictionary * allCommentsNewDict = defaultNilObject([dictionary objectForKey:@"newComments"]);
+    NSDictionary * newItemsDict = defaultNilObject([allCommentsNewDict objectForKey:@"comments"]);
+    NSArray * allCommentsNewAry = defaultNilObject([newItemsDict objectForKey:@"items"]);
+    
+    // user identify string 
+    self.newCommentsUserViewInfos = defaultNilObject([newItemsDict objectForKey:@"userCardViewInfos"]);
+    
+    NSMutableArray * resultsCommentsNew = [NSMutableArray array];
+    
+    for (int index = 0; index < allCommentsNewAry.count; index ++) {
+        NSDictionary * commentNewDict = [allCommentsNewAry objectAtIndex:index];
+        CommentInfo * _commentNewItem = [[CommentInfo alloc] init];
+        [_commentNewItem parseResultData:commentNewDict];
+        [resultsCommentsNew addObject:_commentNewItem];
+        [_commentNewItem release];
+    }
+    self.ToutiaoCommentsNewAry = resultsCommentsNew;
+}
+
+-(void)dealloc{
+    
+    [super dealloc];
+}
+@end
+
+@implementation ApiCmdToutiao
+@synthesize message,state,countNum,toutiaoItemsArray,HotCommentsCount,HotCommentsPage,NewCommentsCount,NewCommentsPage;
+
+-(id)init{
+    if (self = [super init]) {
+        self.message = nil;
+        self.countNum = [NSNumber numberWithInt:0];
+        self.toutiaoItemsArray = [[NSArray alloc] init];
+    }
+    
+        return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"mobile/toutiaos.do";
+}
+
+- (NSMutableDictionary*) getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    [paramDict setObject:self.countNum forKey:@"count"];
+    
+    return paramDict;
+}
+
+
+-(void)parseResultData:(NSDictionary *)dictionary{
+    
+    if (dictionary == nil || ![dictionary isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    
+    NSArray * valueAry = [dictionary objectForKey:@"value"];
+    NSMutableArray * resultsArray = [NSMutableArray array];
+    // toutiaoArray: 所有头条的array
+    if ([valueAry isKindOfClass:[NSArray class]]) {
+        for ( int ix = 0 ; ix < valueAry.count; ix ++) {
+            NSDictionary * dictInValue = [valueAry objectAtIndex:ix];
+            
+            ToutiaoInfo  * _toutiao = [[ToutiaoInfo alloc] init];
+            [_toutiao parseResultData:dictInValue];
+            
+            [resultsArray addObject:_toutiao];
+            [_toutiao release];
+        }
+    }
+       self.toutiaoItemsArray = resultsArray;
+}
+
+
+-(void)dealloc{
+    [toutiaoItemsArray release];
+    [super dealloc];
+}
+
+@end

@@ -1,0 +1,267 @@
+//
+//  ApiCmdCommentOp.m
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmdCommentOp.h"
+#import "CommentInfo.h"
+#import "common.h"
+#import "UserModel.h"
+#import "CommUtils.h"
+
+@implementation ApiCmdCommentCreate
+@synthesize  docId,sig,CommentUserIden,CommentType,CommentContent,CommentData,CommentVoiceLength,message,state,_type,commentPublished;
+
+-(id)initWithCommentType:(enum PublishCommentType *)type DocId:(NSString *)_docId{
+    self = [super init];
+    if (self) {
+        self._type = type;
+        self.docId = _docId;
+//        [self.docId retain];
+        self.commentPublished = [[CommentInfo alloc] init];
+    }
+    return self;
+}
+
+-(id)initWithCommentType:(enum PublishCommentType *)type{
+    self = [super init];
+    if (self) {
+        self._type = type;
+        self.docId = [[NSString alloc] init];
+        self.commentPublished = [[CommentInfo alloc] init];
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"comment/publishComment.do";
+}
+
+- (NSMutableDictionary*) getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    apiLogDebug(@"get paramdic action self.docId %@",self.docId);
+    assert(self.docId);
+    
+    [paramDict setObject:self.docId forKey:@"appID"];
+    
+    if (_type != CommentTypeText) {
+        self.CommentContent = @"";
+    }
+    
+    [paramDict setObject:self.CommentContent forKey:@"content"];
+    [paramDict setObject:@"0" forKey:@"parentUuid"];
+    [paramDict setObject:@"01032301" forKey:@"productcode"];
+    
+    UserModel * um = [CommUtils userModel];
+    
+    if ([um hadRegist]) {
+        [paramDict setObject:um.userId forKey:@"userid"];                // 真实用户 useriden，iphone、android
+        [paramDict setObject:um.userNick forKey:@"usernick"];
+        [paramDict setObject:@"0" forKey:@"usertype"];              // 可选参数
+    }else{
+        [paramDict setObject:[super uuid] forKey:@"userid"];
+        [paramDict setObject:@"ss" forKey:@"usernick"];
+        [paramDict setObject:@"3" forKey:@"usertype"];              // 可选参数
+    }
+    
+    if (_type == CommentTypeText) {
+        [paramDict setObject:@"0" forKey:@"sound.length"];
+    }else{
+        [paramDict setObject:self.CommentVoiceLength forKey:@"sound.length"];
+        [paramDict setObject:self.CommentData forKey:@"sound.content"];
+        [paramDict setObject:@"2" forKey:@"sound.type"];
+    }
+    
+    NSMutableString * rootStr = [NSMutableString stringWithString:@"http://api.hudong.com/comment/publishComment.do?"];
+    [rootStr appendString:[NSString stringWithFormat:@"appID=%@",[paramDict objectForKey:@"appID"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&content=%@",[paramDict objectForKey:@"content"]]];
+    [rootStr appendString:@"&parentUuid=0"];
+    [rootStr appendString:@"&productcode=01032301"];
+    [rootStr appendString:[NSString stringWithFormat:@"&userid=%@",[paramDict objectForKey:@"userid"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&usernick=%@",[paramDict objectForKey:@"usernick"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&usertype=%@",[paramDict objectForKey:@"usertype"]]];
+    [rootStr appendString:@"&privateKey=@baike&hudong*"];
+    
+    apiLogInfo(@"rootStr md5:%@ --- url string %@",md5(rootStr),rootStr);
+    
+//    http://api.hudong.com/comment/publishComment.do?appID=200000208861&content=hello&parentUuid=0&productcode=01032301&userid=fcad46c96d0e5e778a903e822d7a666c00000000&usernick=ss&usertype=3&privateKey=@baike&hudong*
+    
+    NSString * sigString = md5(rootStr);
+    [paramDict setObject:sigString forKey:@"sign"];
+    
+    return paramDict;
+}
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil || ![dictionary isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"state"]);
+    
+    NSDictionary * commentDict = [dictionary objectForKey:@"comment"];
+    CommentInfo * _info = [[CommentInfo alloc] init];
+    [_info parseResultData:commentDict];
+    self.commentPublished = _info;
+    [_info release];
+    
+//    {"msg":"","status":1,"value":{"comment":{"appID":"300000436472","commentType":"TEXT","content":"google","downComment":0,"isTop":0,"isValuable":0,"parentUuid":"0","productCode":"01032301","replyNum":0,"time":1359441655269,"timeStr":"","totalScore":0,"upComment":0,"updateTime":1359441655269,"updateTimeStr":"","userIden":"fcad46c96d0e5e778a903e822d7a666c00000000","userImg":"","userIp":"10.0.1.195","userNick":"iPhone手机用户","uuid":"2c9081a93c85071a013c850975e50002"},"userInfoCard":"0,0,0,0","userSource":""}}
+    
+}
+
+-(void)dealloc{
+    [docId release];
+    [CommentContent release];
+    [CommentData release];
+    [CommentUserIden release];
+    [commentPublished release];
+    [super dealloc];
+}
+
+@end
+
+@implementation ApiCmdCommentDigg
+@synthesize optCommentInfo,CommentUserIden,CommentVoteType,CommentBehaviorScore,CommentAllScore,message,state,optType;
+
+-(id)initWithOptType:(CommentOptType)_type{
+    self = [super init];
+    if (self) {
+        self.optType = _type;
+        self.optCommentInfo = [[CommentInfo alloc] init];
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"comment/commentScore.do";
+}
+
+- (NSMutableDictionary*) getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    UserModel * um = [CommUtils userModel];
+    
+    [paramDict setObject:self.optCommentInfo.docId forKey:@"appID"];
+    if (um.hadRegist) {
+        [paramDict setObject:@"0" forKey:@"usertype"];
+        [paramDict setObject:um.userIden forKey:@"userid"];
+    }else{
+        [paramDict setObject:@"3" forKey:@"usertype"];
+        [paramDict setObject:[super uuid] forKey:@"userid"];
+    }
+    
+    [paramDict setObject:[NSString stringWithFormat:@"%d",self.optType] forKey:@"optype"];
+    [paramDict setObject:@"01032301" forKey:@"productcode"];
+    [paramDict setObject:self.optCommentInfo.CommentId forKey:@"uuid"];
+    
+    
+    NSMutableString * rootStr = [NSMutableString stringWithString:@"http://api.hudong.com/comment/commentScore.do?"];
+    [rootStr appendString:[NSString stringWithFormat:@"appID=%@",[paramDict objectForKey:@"appID"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&optype=%@",[paramDict objectForKey:@"optype"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&productcode=%@",@"01032301"]];
+    [rootStr appendString:[NSString stringWithFormat:@"&userid=%@",[paramDict objectForKey:@"userid"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&usertype=%@",[paramDict objectForKey:@"usertype"]]];
+    [rootStr appendString:[NSString stringWithFormat:@"&uuid=%@",[paramDict objectForKey:@"uuid"]]];
+    [rootStr appendString:@"&privateKey=@baike&hudong*"];
+    
+    [paramDict setObject:md5(rootStr) forKey:@"sign"];
+    
+    return paramDict;
+}
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"state"]);
+    
+    NSDictionary * valueDict = defaultNilObject([dictionary objectForKey:@"value"]);
+    
+//    NSString * _scoreStr = defaultNilObject([valueDict objectForKey:@"comment_behavior_score"]);
+//    NSNumberFormatter * f = [[NSNumberFormatter alloc] init];
+//    [f setNumberStyle:NSNumberFormatterDecimalStyle];
+//    NSNumber * myNumber = [f numberFromString:_scoreStr];
+    
+    self.CommentBehaviorScore = defaultNilObject([valueDict objectForKey:@"comment_behavior_score"]);
+                                     
+
+//    NSString * _allScoreStr = defaultNilObject([valueDict objectForKey:@"comment_all_score"]);
+//    NSNumber * allScoreNumber = [f numberFromString:_allScoreStr];
+    
+                                         
+    self.CommentAllScore = defaultNilObject([valueDict objectForKey:@"comment_all_score"]);;
+//    [f release];
+}
+
+-(void)dealloc{
+    [optCommentInfo release];
+    [super dealloc];
+}
+
+@end
+
+@implementation ApiCmdCommentGetMore
+@synthesize ToutiaoId,page,number,message,state,commentsArray,commentShowType;
+
+-(id)initWithShowType:(CommentShowType)_type{
+    self = [super init];
+    if (self) {
+        self.ToutiaoId = nil;
+        self.commentShowType = _type;
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"comment/show.do";
+}
+
+- (NSMutableDictionary*) getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    [paramDict setObject:self.ToutiaoId forKey:@"appID"];
+    [paramDict setObject:@"01032301" forKey:@"productcode"];
+    if (commentShowType == CommentShowTypeHot) {
+        [paramDict setObject:@"1" forKey:@"commentShowType"];   
+    }else
+        [paramDict setObject:@"2" forKey:@"commentShowType"];
+    
+    [paramDict setObject:self.number forKey:@"startIndex"];
+    [paramDict setObject:self.page forKey:@"page"];
+    return paramDict;
+}
+
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"status"]);
+    
+    NSDictionary * allDict = defaultNilObject([dictionary objectForKey:@"comments"]);
+    NSArray * array = defaultNilObject([allDict objectForKey:@"items"]);
+    NSMutableArray  * resultAry = [NSMutableArray array];
+    for (int index = 0; index < array.count;  index ++) {
+        NSDictionary * dict = [array objectAtIndex:index];
+        CommentInfo * _comment = nil;
+        [_comment parseResultData:dict];
+        [resultAry  addObject:_comment];
+    }
+    self.commentsArray = resultAry;
+}
+
+-(void)dealloc{
+    
+    [super dealloc];
+}
+
+@end

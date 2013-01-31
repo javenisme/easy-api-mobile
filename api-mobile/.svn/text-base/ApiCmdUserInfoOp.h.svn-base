@@ -1,0 +1,40 @@
+//
+//  ApiCmdUserInfoOp.h
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmd.h"
+#import "UserInfo.h"
+
+@interface ApiCmdChangeUserPic : ApiCmd{
+    NSString * message;
+    NSNumber * state;
+
+}
+@property (nonatomic,retain)NSString *message;
+@property (nonatomic,retain)NSNumber *state;
+
++(NSString *)getSuffixUrl;
+
+@end
+
+
+@interface ApiCmdGetUserInfo : ApiCmd{
+    NSString * userIden;
+    
+    NSString * message;
+    NSNumber * state;
+
+    UserInfo * userInfo;
+}
+@property (nonatomic,retain)NSString * userIden;
+@property (nonatomic,retain)NSString *message;
+@property (nonatomic,retain)NSNumber *state;
+@property (nonatomic,retain)UserInfo * userInfo;
+
++(NSString *)getSuffixUrl;
+
+@end

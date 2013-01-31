@@ -1,0 +1,72 @@
+//
+//  ApiCmdToutiao.h
+//  HDBaike
+//
+//  Created by javen on 13-1-22.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmd.h"
+
+
+@interface ToutiaoInfo : NSObject{
+    
+    NSString * DocId;               // 所属词条id
+    
+    NSString * ToutiaoId;           // 所属观察ID
+    
+    NSString * ToutiaoTitle;           //头条标题
+    NSString * ToutiaoDocTitle;       //头条对应词条
+    NSString * ToutiaoDesc;            //头条描述
+    NSString * ToutiaoPicUrl;         //头条图片地址
+    NSNumber * ToutiaoCommentCount;   //头条吱声数
+    
+    NSArray * ToutiaoCommentsHotAry; //头条热点评论数组
+    NSArray * ToutiaoCommentsNewAry;     //头条最新评论数组
+}
+@property (nonatomic,retain)NSString * DocId;
+@property (nonatomic,retain)NSString * ToutiaoId;
+@property (nonatomic,retain)NSString * ToutiaoTitle;
+@property (nonatomic,retain)NSString * ToutiaoDocTitle;
+@property (nonatomic,retain)NSString * ToutiaoDesc;
+@property (nonatomic,retain)NSString * ToutiaoPicUrl;
+@property (nonatomic,retain)NSNumber * ToutiaoCommentCount;
+@property (nonatomic,retain)NSArray * ToutiaoCommentsHotAry;
+@property (nonatomic,retain)NSArray * ToutiaoCommentsNewAry;
+
+@property (nonatomic,retain) NSDictionary * hotCommentsUserViewInfos;
+@property (nonatomic,retain) NSDictionary * newCommentsUserViewInfos;
+
+@end
+
+@interface ApiCmdToutiao : ApiCmd{
+ 
+    NSNumber * countNum;                 //获取头条个数
+    NSString * message;                 //消息
+    NSNumber * state;                   //state
+    
+    
+    // option parameters
+    NSNumber * HotCommentsPage;
+    NSNumber * HotCommentsCount;
+    
+    NSNumber * NewCommentsPage;
+    NSNumber * NewCommentsCount;
+    
+    NSArray * toutiaoItemsArray;
+}
+@property (nonatomic,retain) NSNumber * countNum;
+@property(nonatomic,retain)NSString * message;
+@property(nonatomic,retain)NSNumber * state;
+@property(nonatomic,retain)NSArray * toutiaoItemsArray;
+
+@property(nonatomic,retain) NSNumber * HotCommentsPage;
+@property(nonatomic,retain) NSNumber * HotCommentsCount;
+
+@property(nonatomic,retain) NSNumber * NewCommentsPage;
+@property(nonatomic,retain) NSNumber * NewCommentsCount;
+
+//-(id)initWithCount:(NSNumber *)numb;
++(NSString *)getSuffixUrl;
+
+@end

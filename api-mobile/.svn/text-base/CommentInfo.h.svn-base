@@ -1,0 +1,54 @@
+//
+//  CommentInfo.h
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+@interface CommentInfo : NSObject{
+    
+    NSNumber * docId;               // 词条ID
+    
+    NSString * CommentId;              //唯一标识ID
+    NSString * CommentUserIden;       //用户加密id
+    NSString * CommentUserNick;       //用户昵称
+    NSString * CommentUserPicUrl;    //用户头像URL
+    NSNumber * CommentVoteCount;  //吱声分贝数
+    NSNumber * CommentDing;       //声援数（顶）
+    NSNumber * CommentCai;       //声讨数（踩）
+    NSString * CommentType;      //评论类型:TEXT为文字, SOUND为语音
+    NSString * CommentContent;   // 语音为语音URL,文字为文字内容
+    NSNumber * CommentVoiceLength; //语音评论时长,以秒为单位
+    NSDate * CommentDate;       //评论发布时间
+    NSString * CommentSource;   //评论来源(含用户认证信息)
+    
+    
+    // 仅当吱声类型时才有此值
+    NSString * ZhishengMP3Url;
+    NSString * ZhishengAMRUrl;
+}
+
+@property(nonatomic,retain) NSNumber * docId;
+@property(nonatomic,retain) NSString * CommentId;              //唯一标识ID
+@property(nonatomic,retain) NSString * CommentUserIden;       //用户加密id
+@property(nonatomic,retain) NSString * CommentUserNick;       //用户昵称
+@property(nonatomic,retain) NSString * CommentUserPicUrl;    //用户头像URL
+@property(nonatomic,retain) NSNumber * CommentVoteCount;  //吱声分贝数
+@property(nonatomic,retain) NSNumber * CommentDing;       //声援数（顶）
+@property(nonatomic,retain) NSNumber * CommentCai;       //声讨数（踩）
+@property(nonatomic,retain) NSString * CommentType;        ////评论类型:TEXT为文字, SOUND为语音
+@property(nonatomic,retain) NSString * CommentContent;     // 语音为语音URL,文字为文字内容
+@property(nonatomic,retain) NSNumber * CommentVoiceLength; //语音评论时长,以秒为单位
+@property(nonatomic,retain) NSDate * CommentDate;
+@property(nonatomic,retain) NSString * CommentSource;      //评论来源(含用户认证信息)
+
+@property(nonatomic,retain) NSString * ZhishengMP3Url;
+@property (nonatomic,retain) NSString * ZhishengAMRUrl;
+
+- (void) parseResultData:(NSDictionary*) dictionary;
+
+
+@end

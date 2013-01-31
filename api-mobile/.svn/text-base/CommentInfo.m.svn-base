@@ -1,0 +1,84 @@
+//
+//  CommentInfo.m
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "CommentInfo.h"
+#import "common.h"
+#import "ApiCmd.h"
+#import "SBJSON.h"
+
+@implementation CommentInfo
+@synthesize docId,CommentId,CommentUserIden,CommentUserNick,CommentUserPicUrl, CommentDing, CommentCai, CommentVoteCount, CommentType,CommentContent,CommentVoiceLength,CommentDate,CommentSource,ZhishengAMRUrl,ZhishengMP3Url;
+
+- (id)init
+{
+    self = [super init];
+    if (self) {
+        // Initialization code here.
+        self.CommentId = nil;
+    }
+    
+    return self;
+}
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    
+    if (nil == dictionary || ![dictionary isKindOfClass:[NSDictionary class]]) {
+        return;
+    }
+    
+    //    {"msg":"","status":1,"value":{"comment":{"appID":"300000436472","commentType":"TEXT","content":"google","downComment":0,"isTop":0,"isValuable":0,"parentUuid":"0","productCode":"01032301","replyNum":0,"time":1359441655269,"timeStr":"","totalScore":0,"upComment":0,"updateTime":1359441655269,"updateTimeStr":"","userIden":"fcad46c96d0e5e778a903e822d7a666c00000000","userImg":"","userIp":"10.0.1.195","userNick":"iPhone手机用户","uuid":"2c9081a93c85071a013c850975e50002"},"userInfoCard":"0,0,0,0","userSource":""}}
+    
+    self.docId = defaultNilObject([dictionary objectForKey:@"appID"]);
+    self.CommentId = defaultNilObject([dictionary objectForKey:@"uuid"]);
+
+    //    content = "{\"urls\":{\"2\":\"http://a6.att.hudong.com/13/91/13912deecf38443dabcdd30cd79e202d.amr\",\"1\":\"http://a6.att.hudong.com/13/91/13912deecf38443dabcdd30cd79e202d.mp3\"},\"length\":30}";
+    
+    self.CommentContent = defaultNilObject([dictionary objectForKey:@"content"]);
+    
+    NSPredicate *p = [NSPredicate predicateWithFormat:@"SELF like[c] %@", @"*#urls*2*1*"];
+    BOOL zhishengUrlBoo = [p evaluateWithObject:self.CommentContent];
+    
+    if (zhishengUrlBoo) {
+        SBJSON * sbJson = [[SBJSON alloc] init];
+        NSDictionary * zhishengUrlDict = [sbJson objectWithString:self.CommentContent];
+        if (zhishengUrlDict != nil) {
+            self.ZhishengMP3Url = [zhishengUrlDict objectForKey:@"1"];
+            self.ZhishengAMRUrl = [zhishengUrlDict objectForKey:@"2"];
+        }
+        [sbJson release];
+    }
+    
+    self.CommentSource = defaultNilObject([dictionary objectForKey:@"source"]);
+    self.CommentType = defaultNilObject([dictionary objectForKey:@"commentType"]);
+    self.CommentUserIden = defaultNilObject([dictionary objectForKey:@"userIden"]);
+    self.CommentUserNick = defaultNilObject([dictionary objectForKey:@"userNick"]);
+    self.CommentUserPicUrl = defaultNilObject([dictionary objectForKey:@"userImg"]);
+    self.CommentVoiceLength = defaultNilObject([dictionary objectForKey:@"comment_voice_length"]);
+    self.CommentVoteCount = defaultNilObject([dictionary objectForKey:@"comment_vote_count"]);
+    self.CommentDing = defaultNilObject([dictionary objectForKey:@"isTop"]);
+    self.CommentCai = defaultNilObject([dictionary objectForKey:@"downComment"]);
+    self.CommentDate = defaultNilObject([dictionary objectForKey:@"timeStr"]);
+    
+}
+
+-(void)dealloc{
+    [CommentId  release];
+    [CommentContent release];
+    [CommentSource release];
+    [CommentType   release];
+    [CommentUserIden release];
+    [CommentUserNick release];
+    [CommentUserPicUrl release];
+    [CommentVoiceLength release];
+    [CommentVoteCount release];
+    [CommentDing release];   
+    [CommentCai release];
+    [CommentDate release];
+    [super dealloc];
+}
+@end

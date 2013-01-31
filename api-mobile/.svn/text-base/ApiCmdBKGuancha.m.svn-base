@@ -1,0 +1,180 @@
+//
+//  ApiCmdBKGuancha.m
+//  HDBaike
+//
+//  Created by javen on 13-1-22.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmdBKGuancha.h"
+#import "CommentInfo.h"
+#import "common.h"
+
+@implementation BKGuancha
+@synthesize GuanchaId,DocId,GuanchaCommentCount,GuanchaTitle,GuanchaPictureUrl,GuanchaDesc,GuanchaDocTitle,hotCommentsUserViewInfos,newCommentsUserViewInfos,GuanchaCommentsHotAry,GuanchaCommentsNewAry;
+
+-(id)init{
+    if (self = [super init]) {
+        self.GuanchaId = nil;
+    }
+    return self;
+}
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+    self.DocId = defaultNilObject([dictionary objectForKey:@"docId"]);
+    self.GuanchaId = defaultNilObject([dictionary objectForKey:@"surveyId"]);
+    self.GuanchaCommentCount = defaultNilObject([dictionary objectForKey:@"surveyCommentCount"]);
+    self.GuanchaTitle  = defaultNilObject([dictionary objectForKey:@"surveyTitle"]);
+    self.GuanchaDesc = defaultNilObject([dictionary objectForKey:@"surveyDesc"]);
+    self.GuanchaPictureUrl = defaultNilObject([dictionary objectForKey:@"surveyPicUrl"]);
+    self.GuanchaDocTitle = defaultNilObject([dictionary objectForKey:@"surveyDocTitle"]);
+    
+    
+    // parse toutiao comments hot array
+    NSDictionary * allCommentsHotDict = defaultNilObject([dictionary objectForKey:@"hotComments"]);
+    NSDictionary * hotItemsDict = defaultNilObject([allCommentsHotDict objectForKey:@"comments"]);
+    NSArray * allCommentsHotAry = defaultNilObject([hotItemsDict objectForKey:@"items"]);
+    NSMutableArray * resultsCommentsHot = [NSMutableArray array];
+    
+    // user identify string
+    self.hotCommentsUserViewInfos = defaultNilObject([hotItemsDict objectForKey:@"userCardViewInfos"]);
+    
+    for (int index = 0; index < allCommentsHotAry.count; index ++) {
+        NSDictionary * commentDict = [allCommentsHotAry objectAtIndex:index];
+        CommentInfo * _commentItem = [[CommentInfo alloc] init];
+        [_commentItem parseResultData:commentDict];
+        [resultsCommentsHot addObject:_commentItem];
+        [_commentItem release];
+    }
+    self.GuanchaCommentsHotAry = resultsCommentsHot;
+    
+    // parse toutiao comments new array
+    NSDictionary * allCommentsNewDict = defaultNilObject([dictionary objectForKey:@"newComments"]);
+    NSDictionary * newItemsDict = defaultNilObject([allCommentsNewDict objectForKey:@"comments"]);
+    NSArray * allCommentsNewAry = defaultNilObject([newItemsDict objectForKey:@"items"]);
+    
+    // user identify string
+    self.newCommentsUserViewInfos = defaultNilObject([newItemsDict objectForKey:@"userCardViewInfos"]);
+    
+    NSMutableArray * resultsCommentsNew = [NSMutableArray array];
+    
+    for (int index = 0; index < allCommentsNewAry.count; index ++) {
+        NSDictionary * commentDict = [allCommentsNewAry objectAtIndex:index];
+        CommentInfo * _commentItem = [[CommentInfo alloc] init];
+        [_commentItem parseResultData:commentDict];
+        [resultsCommentsHot addObject:_commentItem];
+        [_commentItem release];
+    }
+    self.GuanchaCommentsNewAry = resultsCommentsNew;
+
+    
+}
+
+-(void)dealloc{
+    [super dealloc];
+}
+@end
+
+
+@implementation ApiCmdBKGuancha
+@synthesize bkGuancha,bkGuanchaArray,message,state,count,page;
+
+-(id)init{
+    if(self = [super init]){
+        self.count = nil;
+        self.page = nil;
+    }
+    return self;
+}
+
+
++(NSString *)getSuffixUrl{
+    return @"mobile/baikeSurveys.do";
+}
+
+-(NSMutableDictionary *)getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    [paramDict setObject:self.count forKey:@"count"];
+    [paramDict setObject:self.page forKey:@"page"];
+
+    return paramDict;
+}
+
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"state"]);
+    
+    NSArray * array = defaultNilObject([dictionary objectForKey:@"value"]);
+    NSMutableArray  * resultAry = [NSMutableArray array];
+    for (int index = 0; index < array.count;  index ++) {
+        NSDictionary * dict = [array objectAtIndex:index];
+        BKGuancha * _bkGuancha = [[BKGuancha alloc] init];
+        [_bkGuancha parseResultData:dict];
+        [resultAry  addObject:_bkGuancha];
+        [_bkGuancha release];
+    }
+    self.bkGuanchaArray = resultAry;
+}
+
+
+-(void)dealloc{
+    [super dealloc];
+}
+@end
+
+
+@implementation ApiCmdBKGuanchaDetail
+@synthesize message,state,guanchaId,guanchaInfo;
+
+
+-(id)init{
+    if(self = [super init]){
+        self.guanchaId = nil;
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"mobile/guanchaDetail.do";
+}
+
+-(NSMutableDictionary *)getParamDict{
+    NSMutableDictionary* paramDict = [[[NSMutableDictionary alloc] init] autorelease];
+    
+    [paramDict setObject:self.guanchaId forKey:@"guancha_id"];
+    
+    return paramDict;
+}
+- (void) parseResultData:(NSDictionary*) dictionary{
+    if (dictionary == nil) {
+        return;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"status"]);
+    
+    NSDictionary * guanchaDict = defaultNilObject([dictionary objectForKey:@"value"]);
+
+    BKGuancha * _guancha = [[BKGuancha alloc] init];
+    [_guancha parseResultData:guanchaDict];
+    self.guanchaInfo = _guancha;
+
+}
+
+-(void)dealloc{
+    [guanchaInfo release];
+    [guanchaId release];
+    [super dealloc];
+}
+
+
+@end

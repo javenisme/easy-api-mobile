@@ -1,0 +1,86 @@
+//
+//  ApiCmdBKGuancha.h
+//  HDBaike
+//
+//  Created by javen on 13-1-22.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmd.h"
+
+// bkguancha info
+@interface BKGuancha : NSObject{
+    NSNumber * GuanchaId;                  // Guancha id
+    NSString * GuanchaPictureUrl;         // 观察图片url
+    NSString * GuanchaTitle;                //观察title
+    NSNumber * GuanchaCommentCount;       // 观察吱声数
+    NSString * GuanchaDesc;                 //观察摘要
+    NSString * GuanchaDocTitle;             //观察对应主词条名
+    
+    NSString * DocId;               // 所属词条id
+    NSDictionary * hotCommentsUserViewInfos;
+    NSDictionary * newCommentsUserViewInfos;
+    NSArray * GuanchaCommentsHotAry;
+    NSArray * GuanchaCommentsNewAry;
+}
+
+@property (nonatomic,retain)NSString * DocId;
+@property (nonatomic,retain) NSNumber * GuanchaId;
+@property (nonatomic,retain) NSString * GuanchaPictureUrl;
+@property (nonatomic,retain) NSString * GuanchaTitle;
+@property (nonatomic,retain) NSNumber * GuanchaCommentCount;
+
+@property (nonatomic,retain) NSString * GuanchaDesc;
+@property (nonatomic,retain) NSString * GuanchaDocTitle;
+@property (nonatomic,retain) NSDictionary * hotCommentsUserViewInfos;
+@property (nonatomic,retain) NSDictionary * newCommentsUserViewInfos;
+@property (nonatomic,retain) NSArray * GuanchaCommentsHotAry;
+@property (nonatomic,retain) NSArray * GuanchaCommentsNewAry;
+
+@end
+
+// bkguancha apicmd
+@interface ApiCmdBKGuancha : ApiCmd{
+    BKGuancha * bkGuancha;
+    
+    NSString * message;
+    NSNumber * state;
+    
+    NSArray * bkGuanchaArray;
+    
+    NSNumber * count;
+    NSNumber * page;
+}
+@property (nonatomic,retain)BKGuancha * bkGuancha;
+@property (nonatomic,retain)NSString * message;
+@property (nonatomic,retain)NSNumber * state;
+@property (nonatomic,retain)NSArray * bkGuanchaArray;
+
+@property (nonatomic,retain)NSNumber * count;
+@property (nonatomic,retain)NSNumber * page;
+
++(NSString *)getSuffixUrl;
+
+@end
+
+
+// bkguancha detail apicmd
+
+@interface ApiCmdBKGuanchaDetail : ApiCmd{
+    // 入参
+     NSString * guanchaId;
+    
+    // api return
+    NSString * message;
+    NSNumber * state;
+    BKGuancha * guanchaInfo;
+}
+
+@property (nonatomic,retain) NSString * guanchaId;
+@property (nonatomic,retain)NSString * message;
+@property (nonatomic,retain)NSNumber * state;
+@property (nonatomic,retain)BKGuancha * guanchaInfo;
+
++(NSString *)getSuffixUrl;
+
+@end

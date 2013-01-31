@@ -1,0 +1,132 @@
+//
+//  ApiCmdCommentOp.h
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmd.h"
+#import "CommentInfo.h"
+
+enum PublishCommentType {
+    CommentTypeText = 0,
+    CommentTypeSound = 1,
+    };
+
+// 吱声 apicmd
+@interface ApiCmdCommentCreate : ApiCmd{
+    NSString * sig;         //手机唯一标识id
+    NSString * CommentUserIden; //用户加密id
+    NSNumber * CommentType;        // 评论类型(1为文字,2为语音)
+//    NSString * CommentDevice;       //android/ios
+    NSString * CommentContent;      //评论内容，小于140个汉字
+    NSData  * CommentData;          //二进制数据
+    NSNumber * CommentVoiceLength;  //语音长度 单位秒
+//    NSString * CommentDocTitle;     //评论对应的词条标题
+//    NSString * paralist;         //传递提交参数的顺序(例如:comment_user_iden,comment_type)
+    
+    NSString * docId;
+    // api return value
+    NSString * message;
+    NSNumber * state;
+    
+    enum PublishCommentType * _type;
+    CommentInfo * commentPublished;
+}
+
+@property (nonatomic,retain) NSString * docId;
+@property (nonatomic,retain) NSString * sig;
+@property (nonatomic,retain) NSString * CommentUserIden;
+@property (nonatomic,retain) NSNumber * CommentType;
+//@property (nonatomic,retain) NSString * CommentDevice;
+@property (nonatomic,retain) NSString * CommentContent;
+@property (nonatomic,retain) NSData * CommentData;
+@property (nonatomic,retain) NSNumber * CommentVoiceLength;
+//@property (nonatomic,retain) NSString * CommentDocTitle;
+//@property (nonatomic,retain) NSString * paralist;
+
+@property (nonatomic,retain) NSString * message;
+@property (nonatomic,retain) NSNumber * state;
+@property (nonatomic)enum PublishCommentType * _type;
+@property (nonatomic,retain)CommentInfo * commentPublished;
+
+-(id)initWithCommentType:(enum PublishCommentType *)type DocId:(NSString *)docId;
+-(id)initWithCommentType:(enum PublishCommentType *)type;
+
++(NSString *)getSuffixUrl;
+
+@end
+
+
+typedef enum CommentOptType{
+    CommentOptDisagre = 0,
+    CommentOptAgree = 1,
+    CommentOptPlay = 2,
+    CommentOptShare = 3
+}CommentOptType;
+
+// add 声援 or 声讨 apicmd
+@interface ApiCmdCommentDigg : ApiCmd{
+    // 入参
+    CommentInfo * optCommentInfo;     // 将要对操作的对象
+    
+    NSString * CommentUserIden;
+    NSNumber * CommentVoteType;     //支持评论类型(1为声援,2为声讨,3为播放,4为分享)
+    
+    NSNumber * CommentBehaviorScore;
+    NSNumber * CommentAllScore;
+    
+    // api return value
+    NSString * message;
+    NSNumber * state;
+    
+    CommentOptType optType;
+}
+
+@property (nonatomic,retain)CommentInfo * optCommentInfo;
+@property (nonatomic,retain)NSString * CommentUserIden;
+@property (nonatomic,retain)NSNumber * CommentVoteType;
+@property (nonatomic,retain)NSNumber * CommentBehaviorScore;
+@property (nonatomic,retain)NSNumber * CommentAllScore;
+@property (nonatomic,retain) NSString * message;
+@property (nonatomic,retain) NSNumber * state;
+@property (nonatomic) CommentOptType optType;
+
+
+-(id)initWithOptType:(CommentOptType)_type;
++(NSString *)getSuffixUrl;
+
+@end
+
+typedef enum _CommentShowType{
+    CommentShowTypeHot = 1,
+    CommentShowTypeAll = 2
+}CommentShowType;
+
+// get more comments apicmd 
+@interface ApiCmdCommentGetMore : ApiCmd{
+    NSString * ToutiaoId;
+    NSNumber * number;
+    NSNumber * page;
+    
+    // message value
+    NSString * message;
+    NSNumber * state;
+    NSArray * commentsArray;
+    
+    CommentShowType commentShowType;
+}
+
+@property (nonatomic,retain)NSString * ToutiaoId;
+@property (nonatomic,retain)NSNumber * number;
+@property (nonatomic,retain)NSNumber * page;
+@property (nonatomic,retain)NSString * message;
+@property (nonatomic,retain)NSNumber * state;
+@property (nonatomic,retain)NSArray * commentsArray;
+@property (nonatomic)CommentShowType commentShowType;
+
+-(id)initWithShowType:(CommentShowType)_type;
++(NSString *)getSuffixUrl;
+
+@end

@@ -1,0 +1,19 @@
+//
+//  DomainProtocol.h
+//  HDBaike
+//
+//  Created by javen on 13-1-5.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#ifndef HDBaike_DomainProtocol_h
+#define HDBaike_DomainProtocol_h
+
+@protocol DomainProtocol <NSObject>
+
+- (void) parseData:(id) data;
+
+@end
+
+
+#endif

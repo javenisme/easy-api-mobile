@@ -1,0 +1,197 @@
+K 25
+svn:wc:ra_dav:version-url
+V 77
+/app/!svn/ver/5059/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile
+END
+common.m
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/app/!svn/ver/4795/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/common.m
+END
+ApiCmdToutiao.h
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/app/!svn/ver/4982/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdToutiao.h
+END
+ApiFault.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiFault.h
+END
+ApiCmdUserInfoOp.h
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/app/!svn/ver/4888/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserInfoOp.h
+END
+ApiCmdToutiao.m
+K 25
+svn:wc:ra_dav:version-url
+V 93
+/app/!svn/ver/5059/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdToutiao.m
+END
+ApiClient.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/app/!svn/ver/4817/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiClient.h
+END
+ApiLogger.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiLogger.h
+END
+ApiFault.m
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiFault.m
+END
+ApiCmdUserInfoOp.m
+K 25
+svn:wc:ra_dav:version-url
+V 96
+/app/!svn/ver/4888/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserInfoOp.m
+END
+ApiClient.m
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/app/!svn/ver/5063/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiClient.m
+END
+CommentInfo.h
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/app/!svn/ver/4991/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/CommentInfo.h
+END
+ApiLogger.m
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiLogger.m
+END
+ApiCmdCommentOp.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/5026/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdCommentOp.h
+END
+CommentInfo.m
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/app/!svn/ver/4996/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/CommentInfo.m
+END
+ApiCmdCommentOp.m
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/5034/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdCommentOp.m
+END
+ApiCmdUserLogin.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/4335/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserLogin.h
+END
+DomainProtocol.h
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/DomainProtocol.h
+END
+UserInfo.h
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/app/!svn/ver/4874/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/UserInfo.h
+END
+ApiCmdUserLogin.m
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/4335/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserLogin.m
+END
+ApiCmd.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/app/!svn/ver/4874/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmd.h
+END
+UserInfo.m
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/app/!svn/ver/4874/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/UserInfo.m
+END
+ApiCmdUserRegister.h
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/app/!svn/ver/4338/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserRegister.h
+END
+ApiCmdBKGuancha.h
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/4968/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdBKGuancha.h
+END
+ApiCmd.m
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/app/!svn/ver/4874/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmd.m
+END
+ApiNotify.h
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/app/!svn/ver/5007/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiNotify.h
+END
+HttpCmdGet.h
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/HttpCmdGet.h
+END
+ApiCmdBKGuancha.m
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/app/!svn/ver/4971/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdBKGuancha.m
+END
+ApiCmdUserRegister.m
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/app/!svn/ver/4338/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdUserRegister.m
+END
+HttpCmdGet.m
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/app/!svn/ver/4217/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/HttpCmdGet.m
+END
+ApiCmdBaikeSearch.h
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/app/!svn/ver/5063/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdBaikeSearch.h
+END
+ApiCmdBaikeSearch.m
+K 25
+svn:wc:ra_dav:version-url
+V 97
+/app/!svn/ver/5063/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/ApiCmdBaikeSearch.m
+END
+common.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/app/!svn/ver/4795/hudongbaike/source/iphone/trunk/HDBaike/HDBaike/api-mobile/common.h
+END

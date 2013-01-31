@@ -1,0 +1,103 @@
+//
+//  ApiCmdUserInfoOp.m
+//  HDBaike
+//
+//  Created by javen on 13-1-16.
+//  Copyright (c) 2013年 baike.com. All rights reserved.
+//
+
+#import "ApiCmdUserInfoOp.h"
+#import  "common.h"
+
+
+// change user head picture apicmd
+@implementation ApiCmdChangeUserPic
+@synthesize message,state;
+
+-(id)init{
+    self = [super init];
+    if (self) {
+
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"editUserIcon.do";
+}
+
+-(NSMutableDictionary *)getParamDict{
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:@"" forKey:@"sid"];
+    [dict setObject:@"" forKey:@"user_iden"];
+    [dict setObject:@"" forKey:@"user_pic_data"];
+    [dict setObject:@"" forKey:@"sourceid"];
+    [dict setObject:@"" forKey:@"Id"];
+    [dict setObject:@"iPhone" forKey:@"mobileType"];
+    [dict setObject:@"" forKey:@"sign"];        //将URL@baike&hudong*进行MD5加密后,得到sign
+    
+    return dict;
+    
+}
+
+-(void)parseResultData:(NSDictionary *)dictionary{
+    if (dictionary == nil || ![dictionary isKindOfClass:[NSDictionary class]]) {
+        return ;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"state"]);
+    
+}
+
+-(void)dealloc{
+    [super dealloc];
+}
+
+@end
+
+
+@implementation ApiCmdGetUserInfo
+@synthesize userIden,message,state,userInfo;
+
+-(id)init{
+    self = [super init];
+    if (self) {
+        
+    }
+    return self;
+}
+
++(NSString *)getSuffixUrl{
+    return @"mobile/userInfo.do";
+}
+
+-(NSMutableDictionary *)getParamDict{
+    NSMutableDictionary * dict = [[NSMutableDictionary alloc] init];
+    [dict setObject:self.userIden  forKey:@"user_iden"];
+    return dict;
+    
+}
+
+
+-(void)parseResultData:(NSDictionary *)dictionary{
+    if (dictionary == nil || ![dictionary isKindOfClass:[NSDictionary class]]) {
+        return ;
+    }
+    
+    self.message = defaultNilObject([dictionary objectForKey:@"msg"]);
+    self.state = defaultNilObject([dictionary objectForKey:@"state"]);
+    
+    NSDictionary * userIfoDict = [dictionary objectForKey:@"value"];
+    
+    UserInfo * _info = [[UserInfo alloc] init];
+    [_info parseResultData:userIfoDict];
+    self.userInfo = _info;
+    [_info release];
+}
+
+-(void)dealloc{
+    [super dealloc];
+}
+
+@end
